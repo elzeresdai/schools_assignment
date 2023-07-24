@@ -1,0 +1,11 @@
+version: '3.7'
+
+services:
+
+  schools:
+    build:
+      context: ../schools
+      dockerfile: ../schools/Dockerfile
+    restart: always
+    ports:
+      - "8080:80"
