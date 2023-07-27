@@ -1,27 +1,50 @@
 package main
 
 import (
+	"flag"
+	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"net/http"
+	"log"
+	"os"
 )
 
 func main() {
+
+	// Parse command-line flags
+	var portFlag string
+	flag.StringVar(&portFlag, "port", "", "Port number for the server")
+	flag.Parse()
+
+	// Load environment variables from .env file
+	err := godotenv.Load()
+	if err != nil {
+		log.Println("Error loading .env file, using default port.")
+	}
+
+	// Get the port from the environment variable or use the default (8080)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
+	// If portFlag is provided, use it instead of the default or env value
+	if portFlag != "" {
+		port = portFlag
+	}
+
+	startServer(port)
+
+}
+
+func startServer(port string) {
+	// Create a new Echo instance
 	e := echo.New()
 
-	// Middleware
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
-	// Routes
-	e.GET("/", hello)
-
-	// Start server
-	e.Logger.Fatal(e.Start(":1323"))
-}
-
-// Handler
-func hello(c echo.Context) error {
-	return c.String(http.StatusOK, "Hello, World!")
-
+	// Start the server
+	addr := ":" + port
+	e.Logger.Fatal(e.Start(addr))
 }
