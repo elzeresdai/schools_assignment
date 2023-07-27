@@ -8,6 +8,7 @@ import (
 	"log"
 	"os"
 	"schools/internal/schools"
+	"schools/internal/students"
 )
 
 func main() {
@@ -49,6 +50,11 @@ func startServer(port string) {
 	schoolService := schools.NewSchoolService(schoolRepo)
 	schoolHandler := schools.NewSchoolHandler(schoolService)
 	schoolHandler.Register(e)
+
+	studentRepo := students.NewStudentRepository()
+	studentService := students.NewStudentService(studentRepo)
+	studentHandler := students.NewStudentHandler(studentService)
+	studentHandler.Register(e)
 
 	// Start the server
 	addr := ":" + port
