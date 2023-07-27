@@ -7,6 +7,7 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 	"log"
 	"os"
+	"schools/internal/schools"
 )
 
 func main() {
@@ -43,6 +44,11 @@ func startServer(port string) {
 
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
+
+	schoolRepo := schools.NewSchoolRepository()
+	schoolService := schools.NewSchoolService(schoolRepo)
+	schoolHandler := schools.NewSchoolHandler(schoolService)
+	schoolHandler.Register(e)
 
 	// Start the server
 	addr := ":" + port
