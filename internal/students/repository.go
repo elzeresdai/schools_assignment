@@ -40,3 +40,8 @@ func (r *StudentRepository) GetStudentByID(id string) (*Student, error) {
 
 	return student, nil
 }
+
+func (r *StudentRepository) GetHighestGradedStudents(n int) ([]*Student, error) {
+	//TODO implement me
+	panic("implement me")
+}
