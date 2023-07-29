@@ -17,8 +17,8 @@ func NewSchoolHandler(schoolService *SchoolService) internal.HandlerInterface {
 }
 
 func (h *SchoolHandler) Register(e *echo.Echo) {
-	e.POST("/school", h.CreateNewSchool)
-	e.GET("/school", h.ListSchools)
+	e.POST("/schools", h.CreateNewSchool)
+	e.GET("/schools", h.ListSchools)
 }
 
 func (h *SchoolHandler) CreateNewSchool(c echo.Context) error {
