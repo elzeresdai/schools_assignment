@@ -1,6 +1,7 @@
 package schools_students
 
 type SchoolStudents struct {
-	SchoolId  string   `json:"school_id"`
-	StudentId []string `json:"student_id"`
+	SchoolID  string `json:"school_id"`
+	StudentID string `json:"student_id"`
+	OrderID   int64  `json:"order_id"`
 }
