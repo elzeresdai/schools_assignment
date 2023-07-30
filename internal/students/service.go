@@ -35,3 +35,7 @@ func (s *StudentService) GetStudentById(id string) (*Student, error) {
 
 	return student, nil
 }
+
+func (s *StudentService) GetHighestGradedStudents(n int) ([]*Student, error) {
+	return s.studentsRepo.GetHighestGradedStudents(n)
+}

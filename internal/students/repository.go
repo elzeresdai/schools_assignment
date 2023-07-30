@@ -3,6 +3,7 @@ package students
 import (
 	"errors"
 	"github.com/google/uuid"
+	"sort"
 	"sync"
 )
 
@@ -42,6 +43,32 @@ func (r *StudentRepository) GetStudentByID(id string) (*Student, error) {
 }
 
 func (r *StudentRepository) GetHighestGradedStudents(n int) ([]*Student, error) {
-	//TODO implement me
-	panic("implement me")
+	r.mu.RLock()
+	defer r.mu.RUnlock()
+
+	grades := make([]struct {
+		StudentID    string
+		AverageGrade float64
+	}, 0, len(r.students))
+
+	for studentID, student := range r.students {
+		grades = append(grades, struct {
+			StudentID    string
+			AverageGrade float64
+		}{StudentID: studentID, AverageGrade: student.AverageGrade})
+	}
+
+	sort.Slice(grades, func(i, j int) bool {
+		return grades[i].AverageGrade > grades[j].AverageGrade
+	})
+
+	highestGradedStudents := make([]*Student, 0, n)
+	for i := 0; i < n && i < len(grades); i++ {
+		student, ok := r.students[grades[i].StudentID]
+		if ok {
+			highestGradedStudents = append(highestGradedStudents, student)
+		}
+	}
+
+	return highestGradedStudents, nil
 }
