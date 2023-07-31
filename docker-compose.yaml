@@ -1,11 +1,10 @@
 version: '3.7'
 
 services:
-
-  schools:
+  app:
     build:
       context: ../schools
       dockerfile: ../schools/Dockerfile
     restart: always
     ports:
-      - "8080:80"
+      - "8070:80"
